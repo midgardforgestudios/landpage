@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-medieval: 'Cinzel', serif;
+  --color-gold: #D4AF37;
+  --color-gold-light: #FFD700;
+  --color-gold-dark: #B8960C;
+  --color-ember: #FF6B35;
+  --color-fire: #FF4500;
+  --color-silver: #C0C0C0;
+  --color-dark-bg: #0A0A0A;
+  --color-dark-card: #1A1A1A;
+  --color-dark-surface: #252525;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-dark-bg);
+  font-family: 'Cinzel', serif;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+/* --- Físicas do Fogo e Forja --- */
+@keyframes float-up {
+  0% { transform: translateY(0) scale(1); opacity: 0.8; }
+  50% { opacity: 0.4; }
+  100% { transform: translateY(-120vh) scale(0); opacity: 0; }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes float-ember {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0.8;
+    box-shadow: 0 0 10px var(--color-fire), 0 0 20px var(--color-ember);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 15px var(--color-gold), 0 0 30px var(--color-fire);
+  }
+  100% {
+    transform: translateY(-30vh) translateX(30px) scale(0.2);
+    opacity: 0;
+  }
+}
+
+/* --- Animações de Entrada e Vida --- */
+@keyframes forge-reveal {
+  0% { 
+    opacity: 0; 
+    transform: translateY(30px) scale(0.95); 
+    filter: blur(10px); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+    filter: blur(0); 
+  }
+}
+
+@keyframes dragon-breathe {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-15px) scale(1.02); }
+}
+
+/* --- Classes Utilitárias --- */
+.brasa {
+  position: absolute;
+  bottom: 0;
+  border-radius: 50%;
+  background-color: var(--color-fire);
+  animation: float-ember linear infinite;
+  filter: blur(1px);
+}
+
+.animate-reveal {
+  animation: forge-reveal 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  opacity: 0;
+}
+
+.animate-dragon {
+  animation: dragon-breathe 6s ease-in-out infinite;
+}
+
+/* Efeitos 3D Premium */
+.text-ouro-epico {
+  background: linear-gradient(to bottom, #FFF3AA 0%, #D4AF37 35%, #8A631B 70%, #3A2505 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 1.5px #4A350C;
+  filter: drop-shadow(0px 6px 4px rgba(0, 0, 0, 0.9));
+}
