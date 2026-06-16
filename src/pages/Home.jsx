@@ -1,15 +1,15 @@
 import Hero from '../components/sections/Hero';
 import AboutSection from '../components/sections/AboutSection';
-import GameFeatured from '../components/sections/GameFeatured';
 import Services from '../components/sections/Services';
+import ContactSection from '../components/sections/ContactSection';
 
 export default function Home() {
   return (
     <main>
       <Hero />
       <AboutSection />
-      <GameFeatured />
       <Services />
+      <ContactSection />
     </main>
   );
 }

@@ -23,6 +23,13 @@ export default function Background() {
   const canvasRef = useRef(null);
 
   useEffect(() => {
+    // 👇 A MÁGICA ACONTECE AQUI 👇
+    // Verifica se o dispositivo possui um mouse/ponteiro preciso
+    const isDesktop = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+    // Se NÃO for desktop (ou seja, for mobile/tablet), cancela a execução do efeito do mouse
+    if (!isDesktop) return;
+
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d', { alpha: true });
     let sparks = [];
@@ -206,6 +213,7 @@ export default function Background() {
       <div className="absolute inset-0 bg-gradient-to-b from-[#030101] via-[#0A0303] to-[#030101] z-0" />
       <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_bottom,rgba(139,0,0,0.4),transparent_60%)] blur-[50px] z-10" />
 
+      {/* Partículas de fundo continuam ativas para todos os dispositivos (já que são leves) */}
       {ambientParticles.map((p, i) => (
         <div
           key={i}
@@ -229,9 +237,10 @@ export default function Background() {
         />
       ))}
       
+      {/* O canvas só fará alguma coisa se estiver num desktop */}
       <canvas 
         ref={canvasRef} 
-        className="absolute inset-0 z-30"
+        className="absolute inset-0 z-30 hidden md:block" // Esconde via CSS em mobile também
       />
     </div>
   );

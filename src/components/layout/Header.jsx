@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import logoIcon from '../../assets/logos/midgard-icon.png';
 import midgardText from '../../assets/logos/midgard-text.svg';
-import forgeText from '../../assets/logos/studios-text.svg';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -39,8 +38,8 @@ export default function Header() {
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
         
         {/* Link para o topo da página */}
-        <Link to="/" onClick={() => { closeMenu(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="flex items-center gap-4 group cursor-pointer">
-          <div className="w-14 h-14 rounded-full overflow-hidden border border-white/10 shadow-md group-hover:border-gold/40 group-hover:shadow-[0_0_15px_rgba(212,175,55,0.15)] transition-all duration-500 shrink-0">
+        <Link to="/" onClick={() => { closeMenu(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="flex items-center gap-3 sm:gap-4 group cursor-pointer">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border border-white/10 shadow-md group-hover:border-gold/40 group-hover:shadow-[0_0_15px_rgba(212,175,55,0.15)] transition-all duration-500 shrink-0">
             <img 
               src={logoIcon} 
               alt="Logo Midgard" 
@@ -48,31 +47,25 @@ export default function Header() {
             />
           </div>
           
-          <div className="hidden sm:flex items-center -my-20">
+          <div className="flex items-center -my-20">
             <img 
               src={midgardText} 
               alt="Midgard" 
-              className="h-[140px] w-auto object-contain transition-transform duration-500 group-hover:scale-105" 
-            />
-            <img 
-              src={forgeText} 
-              alt="Studios" 
-              className="h-[150px] w-auto object-contain transition-transform duration-500 group-hover:scale-105 -ml-8 -mt-6" 
+              className="h-[100px] md:h-[140px] w-auto object-contain" 
             />
           </div>
         </Link>
 
-        {/* NAVEGAÇÃO DESKTOP: Tags <a> com a função handleNavClick resolvida */}
+        {/* NAVEGAÇÃO DESKTOP */}
         <nav className="hidden md:flex gap-10 text-xs font-bold font-medieval tracking-[0.25em] text-silver">
           <a href="/#quem-somos" onClick={(e) => handleNavClick(e, 'quem-somos')} className="hover:text-gold hover:drop-shadow-[0_0_6px_rgba(212,175,55,0.8)] transition-all duration-300 cursor-pointer">QUEM SOMOS</a>
-          <a href="/#dark-meeting" onClick={(e) => handleNavClick(e, 'dark-meeting')} className="hover:text-gold hover:drop-shadow-[0_0_6px_rgba(212,175,55,0.8)] transition-all duration-300 cursor-pointer">DARK MEETING</a>
           <a href="/#servicos" onClick={(e) => handleNavClick(e, 'servicos')} className="hover:text-gold hover:drop-shadow-[0_0_6px_rgba(212,175,55,0.8)] transition-all duration-300 cursor-pointer">SERVIÇOS</a>
         </nav>
 
         <div className="flex items-center gap-4">
           <a 
-            href="/#dark-meeting" 
-            onClick={(e) => handleNavClick(e, 'dark-meeting')}
+            href="/#contato" 
+            onClick={(e) => handleNavClick(e, 'contato')}
             className="hidden sm:inline-block px-6 py-2.5 border border-gold/30 text-gold font-medieval text-xs tracking-widest uppercase rounded-xs hover:bg-gold hover:text-black hover:shadow-[0_0_15px_rgba(212,175,55,0.5)] transition-all duration-300 cursor-pointer"
           >
             Entrar na Forja
@@ -94,10 +87,28 @@ export default function Header() {
       {/* NAVEGAÇÃO MOBILE */}
       <div className={`md:hidden transition-all duration-300 overflow-hidden ${menuOpen ? 'max-h-80 border-t border-fire/10' : 'max-h-0'}`}>
         <nav className="flex flex-col px-6 py-4 gap-4 bg-dark-bg/75 backdrop-blur-lg">
-          <a href="/#quem-somos" onClick={(e) => handleNavClick(e, 'quem-somos')} className="text-sm font-bold font-medieval tracking-[0.25em] text-silver hover:text-gold transition-colors py-3 border-b border-zinc-900/50 cursor-pointer">QUEM SOMOS</a>
-          <a href="/#dark-meeting" onClick={(e) => handleNavClick(e, 'dark-meeting')} className="text-sm font-bold font-medieval tracking-[0.25em] text-silver hover:text-gold transition-colors py-3 border-b border-zinc-900/50 cursor-pointer">DARK MEETING</a>
-          <a href="/#servicos" onClick={(e) => handleNavClick(e, 'servicos')} className="text-sm font-bold font-medieval tracking-[0.25em] text-silver hover:text-gold transition-colors py-3 border-b border-zinc-900/50 cursor-pointer">SERVIÇOS</a>
-          <a href="/#dark-meeting" onClick={(e) => handleNavClick(e, 'dark-meeting')} className="text-sm font-bold font-medieval tracking-[0.25em] text-gold hover:text-gold transition-colors py-3 cursor-pointer">ENTRAR NA FORJA</a>
+          {/* 👇 Classes adicionadas: block, origin-left, active:scale-95, active:text-fire 👇 */}
+          <a 
+            href="/#quem-somos" 
+            onClick={(e) => handleNavClick(e, 'quem-somos')} 
+            className="block text-sm font-bold font-medieval tracking-[0.25em] text-silver hover:text-gold active:scale-95 active:text-fire origin-left transition-all duration-200 py-3 border-b border-zinc-900/50 cursor-pointer"
+          >
+            QUEM SOMOS
+          </a>
+          <a 
+            href="/#servicos" 
+            onClick={(e) => handleNavClick(e, 'servicos')} 
+            className="block text-sm font-bold font-medieval tracking-[0.25em] text-silver hover:text-gold active:scale-95 active:text-fire origin-left transition-all duration-200 py-3 border-b border-zinc-900/50 cursor-pointer"
+          >
+            SERVIÇOS
+          </a>
+          <a 
+            href="/#contato" 
+            onClick={(e) => handleNavClick(e, 'contato')} 
+            className="block text-sm font-bold font-medieval tracking-[0.25em] text-gold hover:text-gold active:scale-95 active:text-fire origin-left transition-all duration-200 py-3 cursor-pointer"
+          >
+            ENTRAR NA FORJA
+          </a>
         </nav>
       </div>
     </header>
