@@ -112,7 +112,7 @@ npm --version
 Abra o terminal no diretório onde deseja salvar o projeto e execute:
 
 ```bash
-git clone https://github.com/JossMattos/midgard.git
+git clone https://github.com/midgardforgestudios/landpage.git
 cd midgard
 ```
 
