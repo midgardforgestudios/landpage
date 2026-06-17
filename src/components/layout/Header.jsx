@@ -33,7 +33,7 @@ export default function Header() {
   };
 
   return (
-    // A MÁGICA AQUI: z-[100] garante que o Header fique acima de tudo no Hero
+    // z-[100] garante que o Header fique acima de tudo no Hero
     <header className="fixed top-0 left-0 w-full z-[100] bg-gradient-to-b from-fire/10 via-dark-bg/60 to-transparent backdrop-blur-md border-b border-fire/10 shadow-[0_4px_20px_rgba(255,69,0,0.05)] transition-all">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
         
@@ -66,7 +66,9 @@ export default function Header() {
           <a 
             href="/#contato" 
             onClick={(e) => handleNavClick(e, 'contato')}
-            className="hidden sm:inline-block px-6 py-2.5 border border-gold/30 text-gold font-medieval text-xs tracking-widest uppercase rounded-xs hover:bg-gold hover:text-black hover:shadow-[0_0_15px_rgba(212,175,55,0.5)] transition-all duration-300 cursor-pointer"
+            // 👇 AJUSTE AQUI: Mudado de sm:inline-block para md:inline-block 👇
+            // Isso garante que ele não apareça duplicado junto com o menu hambúrguer na horizontal
+            className="hidden md:inline-block px-6 py-2.5 border border-gold/30 text-gold font-medieval text-xs tracking-widest uppercase rounded-xs hover:bg-gold hover:text-black hover:shadow-[0_0_15px_rgba(212,175,55,0.5)] transition-all duration-300 cursor-pointer"
           >
             Entrar na Forja
           </a>
@@ -85,9 +87,9 @@ export default function Header() {
       </div>
 
       {/* NAVEGAÇÃO MOBILE */}
-      <div className={`md:hidden transition-all duration-300 overflow-hidden ${menuOpen ? 'max-h-80 border-t border-fire/10' : 'max-h-0'}`}>
+      {/* Adicionado overflow-y-auto e max-h-[80vh] para garantir que o menu role caso a tela esteja deitada e pequena */}
+      <div className={`md:hidden transition-all duration-300 overflow-y-auto ${menuOpen ? 'max-h-[80vh] border-t border-fire/10' : 'max-h-0'}`}>
         <nav className="flex flex-col px-6 py-4 gap-4 bg-dark-bg/75 backdrop-blur-lg">
-          {/* 👇 Classes adicionadas: block, origin-left, active:scale-95, active:text-fire 👇 */}
           <a 
             href="/#quem-somos" 
             onClick={(e) => handleNavClick(e, 'quem-somos')} 

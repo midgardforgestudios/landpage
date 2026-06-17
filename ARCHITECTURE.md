@@ -1,4 +1,4 @@
-# 🏛️ Arquitetura e Engenharia de Software — Midgard Forge
+# 🏛️ Arquitetura e Engenharia de Software — Midgard Forge Studios
 
 Este documento define os padrões arquiteturais, a topologia do projeto e as diretrizes de manutenção do frontend da Midgard Forge Studios. O objetivo é fornecer integração rápida para novos desenvolvedores e garantir que a base de código permaneça escalável, performática e de fácil manutenção.
 
@@ -21,18 +21,19 @@ A estrutura de pastas foi desenhada para suportar escalabilidade horizontal, ond
 
 ```text
 src/
-├── assets/           # Ativos estáticos brutos (imagens, ícones, logos).
-├── components/       # Módulos reutilizáveis e lógicos.
-│   ├── guards/       # Middlewares e High-Order Components (HOCs) de proteção.
-│   ├── layout/       # Componentes persistentes de infraestrutura (Header, Footer, Background).
-│   └── sections/     # Blocos autônomos de UI que compõem as views principais.
-├── pages/            # Componentes de nível de Rota (Views).
-│   ├── Institucional/# Páginas corporativas futuras.
-│   ├── Legal/        # Documentos de conformidade isolados (Termos, Privacidade).
-│   └── Home.jsx      # View principal (orquestradora das Sections).
 ├── App.jsx           # Árvore de rotas e injeção de provedores globais.
 ├── index.css         # Reset global e injeção do Tailwind.
-└── main.jsx          # Entry point de montagem no DOM.
+├── main.jsx          # Entry point de montagem no DOM.
+├── assets/           # Ativos estáticos brutos.
+│   ├── img/          # Imagens e ilustrações (SVGs, WebP).
+│   └── logos/        # Logotipos e variações da marca (SVG, PNG).
+├── components/       # Módulos reutilizáveis e lógicos.
+│   ├── layout/       # Componentes persistentes de infraestrutura (Header, Footer, Background, etc.).
+│   └── sections/     # Blocos autônomos de UI que compõem as views principais.
+├── guards/           # Middlewares e High-Order Components (HOCs) de proteção.
+└── pages/            # Componentes de nível de Rota (Views).
+    ├── Legal/        # Documentos de conformidade isolados (Cookies, Termos, Privacidade).
+    └── Home.jsx      # View principal (orquestradora das Sections).
 ```
 
 ---
@@ -46,20 +47,31 @@ A composição da página principal segue o padrão **Section-Based Architecture
 ## Estrutura Hierárquica
 
 ```text
-Home.jsx
+App.jsx (Orquestrador Global)
 │
-├── Background
-├── Header
-│
-├── Hero
-├── AboutSection
-├── GameFeatured
-├── Services
-│
-└── Footer
+├── Background                    # Ambientação visual (partículas)
+├── Router (BrowserRouter)
+│   ├── ScrollToTop               # Reset de scroll ao navegar
+│   ├── PageGuard                 # Bloqueio condicional (manutenção)
+│   │   ├── Header                # Navegação principal
+│   │   ├── <Routes>
+│   │   │   ├── Home.jsx          # View raiz (orquestrador de seções)
+│   │   │   │   ├── Hero
+│   │   │   │   ├── AboutSection
+│   │   │   │   ├── Services
+│   │   │   │   └── ContactSection
+│   │   │   ├── Termos
+│   │   │   ├── Privacidade
+│   │   │   └── Cookies
+│   │   └── Footer                # Rodapé institucional
+│   └── CookieConsent             # Banner de cookies
+└── ErrorBoundary                 # Isolamento de falhas
 ```
 
-A página principal (`Home.jsx`) atua apenas como um **Orquestrador de Componentes**, sendo responsável por montar a sequência das seções e controlar a experiência de navegação da aplicação.
+A composição segue duas camadas:
+
+- **`App.jsx`** atua como **Orquestrador Global**, responsável por montar a infraestrutura persistente (roteador, header, footer, background, guards) e definir as rotas da aplicação.
+- **`Home.jsx`** atua como **Orquestrador de Seções**, responsável apenas por montar a sequência de blocos de conteúdo da landing page. Ela não gerencia Header, Footer ou Background — esses são injetados por `App.jsx`.
 
 ---
 
@@ -70,24 +82,25 @@ A Hero Section representa o ponto inicial de contato entre o usuário e a identi
 ### Responsabilidades
 
 - Apresentação da marca.
-- Exibição do slogan institucional.
+- Exibição da descrição institucional e tags de posicionamento.
 - Conversão inicial do visitante através de Call-To-Action (CTA).
 - Fortalecimento da identidade visual do estúdio.
 
 ### Conteúdo
 
-- Logotipo principal.
-- Slogan institucional:
+- Logotipo principal (`midgard-logo.svg`).
+- Descrição institucional: "Somos um estúdio independente focado no desenvolvimento de jogos e produtos digitais."
+- Tags de posicionamento: `Criatividade | Inovação | Tecnologia`
+- Efeito visual **Ouroboros**: três elementos de dragão (cabeça, pescoço, cauda) em SVG com parallax assíncrono via `transform: translate3d()` e máscaras radiais.
+- Partículas de fagulha (`forgeSparks`) animadas em CSS com cores ouro e laranja.
+- Barra de status inferior com indicadores: **Fundação 2011**, **Projeto Destaque: Dark Meeting**, **Foco: Survivor RPG**.
+- Botão CTA (visível apenas em desktop):
 
-> "Sobreviva. Proteja. Reconstrua."
-
-- Botão principal de ação:
-
-> "Entrar na Forja"
+> "Entrar na Forja" → ancora para `#contato`
 
 ### Objetivo Estratégico
 
-Capturar a atenção do usuário nos primeiros segundos de navegação e direcioná-lo para a jornada principal da plataforma.
+Capturar a atenção do usuário nos primeiros segundos de navegação através de imersão visual (dragões, partículas, parallax) e direcioná-lo para a jornada principal da plataforma.
 
 ---
 
@@ -129,34 +142,25 @@ Cada valor utiliza elementos visuais iluminados para reforçar sua importância 
 
 ---
 
-## 3.3 Projeto em Destaque (GameFeatured.jsx)
+## 3.3 Fale Conosco (ContactSection.jsx)
 
-Seção dedicada à apresentação do principal produto proprietário da Midgard Forge Studios.
-
-### Projeto
-
-**Dark Meeting**
+Seção destinada ao contato institucional e abertura de canais de comunicação.
 
 ### Responsabilidades
 
-- Apresentar o universo do jogo.
-- Demonstrar a capacidade técnica e criativa do estúdio.
-- Funcionar como vitrine principal do portfólio.
+- Disponibilizar canais de contato para parcerias, projetos e oportunidades.
+- Facilitar a comunicação direta entre visitantes e o estúdio.
+- Reforçar a abertura da empresa para novas colaborações.
 
-### Conteúdo
+### Canais Disponíveis
 
-- Título estilizado com efeitos inspirados em metal forjado e brasas incandescentes.
-- Lore oficial do universo.
-- Sinopse narrativa.
-- Destaques de gameplay.
+- **Parcerias** — Conexão de marcas a projetos digitais, jogos e experiências criativas.
+- **Projetos** — Submissão de ideias para desenvolvimento de jogos, assets e soluções digitais.
+- **Oportunidades** — Colaboração com a Midgard Forge Studios.
 
-### Conceito
+### Implementação
 
-```text
-Gênero: Survivor RPG
-Ambientação: Pós-apocalíptica
-Tema: Sobrevivência contra hordas de mortos-vivos
-```
+Os canais são apresentados em uma grade responsiva de cards com efeito hover, seguidas por um CTA central que abre o cliente de e-mail padrão do usuário.
 
 ---
 
@@ -172,15 +176,18 @@ Seção destinada à divulgação das áreas de atuação da empresa.
 
 ### Serviços Disponíveis
 
-- Desenvolvimento de Jogos
-- Produção de Assets Digitais
-- Efeitos Visuais (VFX)
-- Integração com Inteligência Artificial
-- Consultoria Técnica Especializada
+- **Desenvolvimento de Projetos** — Apoio ao desenvolvimento de jogos e projetos digitais.
+- **Character Design** — Criação e desenvolvimento de personagens.
+- **Modelagem 3D** — Produção de modelos para jogos, animações e projetos digitais.
+- **Animação** — Criação de animações para personagens, cenários e conteúdos digitais.
+- **Assets** — Desenvolvimento de recursos digitais para projetos e produções.
+- **Produção Visual** — Efeitos visuais (VFX), motion graphics e conteúdos produzidos com After Effects.
+- **Ambientação** — Criação de cenários, universos, documentação criativa e conteúdos para projetos.
+- **Suporte à Produção** — Colaboração com estúdios e equipes em diferentes etapas do desenvolvimento.
 
 ### Implementação
 
-Os serviços são apresentados em uma grade responsiva baseada em cards reutilizáveis, garantindo adaptação para dispositivos desktop, tablet e mobile.
+Os serviços são apresentados em uma grade responsiva (`grid-cols-1 sm:2 lg:3 xl:4`) utilizando o sub-componente `MagneticCard`, que implementa **Iluminação Magnética**: um gradiente radial acompanha a posição do cursor via `onMouseMove`/`getBoundingClientRect`, criando um efeito de luz térmica local. Em dispositivos touch, o efeito é desativado automaticamente via `pointerType === "touch"`.
 
 ---
 
@@ -201,7 +208,7 @@ Responsável pelos elementos visuais de ambientação.
 
 ---
 
-### Header
+### Header (Header.jsx)
 
 Componente de navegação principal.
 
@@ -213,7 +220,7 @@ Componente de navegação principal.
 
 ---
 
-### Footer
+### Footer (Footer.jsx)
 
 Componente institucional persistente.
 
@@ -226,6 +233,40 @@ Componente institucional persistente.
 
 ---
 
+### Cookie Consent (CookieConsent.jsx)
+
+Banner de consentimento de cookies.
+
+#### Responsabilidades
+
+- Notificação sobre uso de cookies.
+- Links para a política de privacidade.
+- Controle de aceitação do usuário.
+
+---
+
+### Scroll to Top (ScrollToTop.jsx)
+
+Utilitário de navegação.
+
+#### Responsabilidades
+
+- Reset automático do scroll ao navegar entre rotas.
+- Garantia de consistência na experiência de navegação SPA.
+
+---
+
+### Maintenance (Maintenance.jsx)
+
+Componente de manutenção.
+
+#### Responsabilidades
+
+- Exibição de aviso quando o site está em manutenção.
+- Bloqueio de acesso a rotas durante janelas de manutenção.
+
+---
+
 ## 3.6 Fluxo de Navegação
 
 A experiência do usuário segue uma progressão narrativa planejada:
@@ -233,11 +274,11 @@ A experiência do usuário segue uma progressão narrativa planejada:
 ```text
 Hero
  ↓
-Quem Somos
+Quem Somos (AboutSection)
  ↓
-Dark Meeting
+Nossos Serviços (Services)
  ↓
-Nossos Serviços
+Fale Conosco (ContactSection)
  ↓
 Footer
 ```
